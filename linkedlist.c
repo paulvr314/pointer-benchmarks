@@ -5,10 +5,11 @@
 #include <assert.h>
 #include <sys/time.h>
 #include <sys/resource.h>
-#include <sys/sysctl.h>
+//#include <sys/sysctl.h>
 #include <sys/types.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+#include <unistd.h>
 
 #include "shuffle.h"
 #define PAGE_SIZE 4096
@@ -102,6 +103,9 @@ int main(int argc,char* argv[])
                                         ll_curr->arr[i % NODE_ARRAY_SIZE] = count;
                                 }
                         } 
+                }
+                if (i != num_iterations - 1) {
+                        sleep(60);
                 }
         }
 
