@@ -20,8 +20,8 @@ struct node {
 
 int main(int argc,char* argv[])
 {
-        if (argc != 4){
-                printf("Usage: ll <log base 2 of num_nodes> <cyclesPerNode> <randomize traversal>\n");
+        if (argc != 5){
+                printf("Usage: ll <log base 2 of num_nodes> <cyclesPerNode> <randomize traversal> <num_iterations>\n");
                 exit(1);
         }
 
@@ -36,6 +36,7 @@ int main(int argc,char* argv[])
         int cyclesPerNode = atoi(argv[2]); 
     
 	int randomize_traversal = atoi(argv[3]);
+        int num_iterations = atoi(argv[4]);
         /* Allocate and initialize the LL */
         struct node **ll = (struct node **) malloc (sizeof(struct node *) * num_nodes);
         assert(ll != NULL);
@@ -86,19 +87,23 @@ int main(int argc,char* argv[])
 	ll_curr->next = ll[num];
 	ll_curr = ll[num];
 	ll_curr->next = NULL;
-	int count = 0;
-	ll_curr = ll_head;
 
-	while(ll_curr != NULL) {
-		printf("%lx\n", ll_curr);
-		ll_curr = ll_curr->next;
-		count++;
-		if(ll_curr != NULL) {
-                        for (int i = 0; i < cyclesPerNode ; i++){
-                                ll_curr->arr[i % NODE_ARRAY_SIZE] = count;
-                        }
-		} 
-	}
+        for (int i = 0; i < num_iterations; i++){
+                printf("\n\nIteration %d\n\n", i);
+                int count = 0;
+                ll_curr = ll_head;
+
+                while(ll_curr != NULL) {
+                        printf("%lx\n", ll_curr);
+                        ll_curr = ll_curr->next;
+                        count++;
+                        if(ll_curr != NULL) {
+                                for (int i = 0; i < cyclesPerNode ; i++){
+                                        ll_curr->arr[i % NODE_ARRAY_SIZE] = count;
+                                }
+                        } 
+                }
+        }
 
 	gettimeofday(&end, 0);
     	long TDur = end.tv_sec - begin.tv_sec;
